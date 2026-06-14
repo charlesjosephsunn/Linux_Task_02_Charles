@@ -1,0 +1,166 @@
+Part A: Understanding Users
+
+1. What is your current username?
+whoami
+Charles
+2. What is UID?
+UID stands for User ID (User Identifier).
+It is a unique number assigned to each user in Linux. The system uses UID instead of username to identify users.
+
+Root user usually has UID = 0
+Regular users usually have UID ≥ 1000
+ id -u
+1000
+3. What is GID?
+GID stands for Group ID (Group Identifier).
+It identifies the primary group of a user in Linux. Each group also has a unique number.
+id -g
+1000
+
+Part B: Create Users & Groups Create
+Part C: File Ownership
+ • • Original Owner
+student 1
+ New Owner 
+student2
+Command Use
+sudo chown student2 credentials.txt
+
+
+Part D: File Permissions
+
+Part E: Permission Analysis
+🔹 755 (rwxr-xr-x)
+
+Owner Rights:
+
+Read, Write, Execute (rwx)
+
+Group Rights:
+
+Read, Execute (r-x)
+
+Other Users Rights:
+
+Read, Execute (r-x)
+
+Real-world use case:
+Used for programs, scripts, or public folders where the owner can modify files, but others can only run or view them.
+Example: system applications or web server directories.
+
+🔹 644 (rw-r--r--)
+
+Owner Rights:
+
+Read, Write (rw-)
+
+Group Rights:
+
+Read only (r--)
+
+Other Users Rights:
+
+Read only (r--)
+
+Real-world use case:
+Used for normal text files, documents, configuration files where only the owner edits but others can view.
+Example: /etc/passwd or report files.
+
+🔹 777 (rwxrwxrwx)
+
+Owner Rights:
+
+Read, Write, Execute (rwx)
+
+Group Rights:
+
+Read, Write, Execute (rwx)
+
+Other Users Rights:
+
+Read, Write, Execute (rwx)
+
+Real-world use case:
+Used only in temporary or unsafe testing environments.
+⚠️ Not secure for production systems because anyone can modify or delete files.
+
+🔹 600 (rw-------)
+
+Owner Rights:
+
+Read, Write (rw-)
+
+Group Rights:
+
+No access (---)
+
+Other Users Rights:
+
+No access (---)
+
+Real-world use case:
+Used for private files like passwords, SSH keys, or confidential documents.
+Example: ~/.ssh/id_rsa
+
+🔹 700 (rwx------)
+
+Owner Rights:
+
+Read, Write, Execute (rwx)
+
+Group Rights:
+
+No access (---)
+
+Other Users Rights:
+
+No access (---)
+
+Real-world use case:
+Used for private directories or scripts where only the owner should access everything.
+Example: personal home directories or secure scripts
+
+Part F: Security Challenge
+File Name	Recommended Permission	Reason
+password_backup.txt	600 (rw-------)	This file may contain sensitive credentials or backups. Only the owner should be able to read and modify it. No access for group or others ensures maximum security.
+public_notice.txt	644 (rw-r--r--)	This is a public file meant to be read by everyone. Only the owner should edit it, while others can only read it.
+system_log.txt	640 (rw-r-----)	Logs are important for system monitoring. The owner can read/write, group (like admins) can read, but others should not access it to prevent tampering or leakage.
+personal_notes.txt	600 (rw-------)	Personal notes are private to the user. No other users should have access, ensuring confidentiality and privacy.
+
+Explanation (Admin Logic)
+600 → Maximum security (private data like passwords, keys)
+644 → Public readable files (safe to share but not modify by others)
+640 → Controlled access (admins/group can read logs, others blocked)
+Permissions are chosen based on least privilege principle (users get only what they need)
+
+Part G: Linux Security Research
+1. Why are file permissions important?
+
+File permissions are important because they control who can read, write, or execute a file in Linux. They help protect data from unauthorized access and prevent accidental or intentional changes. Without permissions, any user could access or modify important system files, which could cause security risks or system damage.
+
+2. What happens if sensitive files are given 777 permissions?
+
+If a sensitive file is given 777 permission, it means everyone can read, write, and execute it. This is very dangerous because:
+
+Any user can view private data
+Any user can modify or delete the file
+Malware or attackers can easily exploit it
+
+So, it leads to serious security risks and data leaks.
+
+3. What is the principle of Least Privilege?
+
+The Principle of Least Privilege (PoLP) means giving users only the minimum level of access they need to perform their job.
+For example, a normal user should not have access to system configuration files, and a guest user should only have read access where necessary. This reduces mistakes and improves security.
+
+4. Why do organizations restrict user access?
+
+Organizations restrict user access to:
+
+Protect sensitive data from unauthorized access
+Prevent accidental changes or deletions
+Reduce security threats like hacking or malware attacks
+Maintain system stability and control
+Ensure each user only accesses what they actually need
+
+This helps keep systems secure, organized, and reliable
